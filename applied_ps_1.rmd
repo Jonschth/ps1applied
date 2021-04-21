@@ -115,8 +115,22 @@ trips_mcma$minutes <- (trips_mcma$arr_hour - trips_mcma$dep_hour)*60 + trips_mcm
 glimpse(trips_mcma)
 
 
-ggplot(trips_mcma, aes(x = minutes),binwidht=5)+
+ggplot(trips_mcma, aes(x = minutes),binwidht=1)+
          geom_histogram()+
   xlim(-5,200)
 ```
+2.3
+
+2.3.1
+```{r}
+glimpse(trips_mcma)
+
+
+trips_mcma %>%
+  drop_na(state_origin, state_dest) %>%
+  drop_na(mun_origin,mun_dest) %>%
+  filter(state_origin==9 & state_dest==9) %>%
+  count()
+
+ ```
 
