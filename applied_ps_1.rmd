@@ -105,8 +105,18 @@ mutate(minutes = (arr_hour - dep_hour)*60 + arr_min - dep_min) %>%
 ```
 
 ```{r}
-mutate(trips_mcma, m = (arr_hour - dep_hour)*60 + arr_min - dep_min)%>%
-ggplot(data = trips_mcma, aes(x = id_trip, y = m))+
-  geom_bar()
+
+
+
+trips_mcma$minutes <- (trips_mcma$arr_hour - trips_mcma$dep_hour)*60 + trips_mcma$arr_min - trips_mcma$dep_min
+
+
+
+glimpse(trips_mcma)
+
+
+ggplot(trips_mcma, aes(x = minutes),binwidht=5)+
+         geom_histogram()+
+  xlim(-5,200)
 ```
 
