@@ -28,7 +28,6 @@ library(ggplot2)
 ```{r}
 library(readr)
 trips_mcma <- read_csv("trips_mcma.csv")
-View(trips_mcma)
 ```
 
 2.1.2 
@@ -104,17 +103,11 @@ mutate(minutes = (arr_hour - dep_hour)*60 + arr_min - dep_min) %>%
    summarize(mean_minutes = mean(minutes, na.rm = TRUE))
 ```
 
+
+
 ```{r}
-
-
-
 trips_mcma$minutes <- (trips_mcma$arr_hour - trips_mcma$dep_hour)*60 + trips_mcma$arr_min - trips_mcma$dep_min
-
-
-
 glimpse(trips_mcma)
-
-
 ggplot(trips_mcma, aes(x = minutes),binwidht=1)+
          geom_histogram()+
   xlim(-5,200)
@@ -125,6 +118,8 @@ ggplot(trips_mcma, aes(x = minutes),binwidht=1)+
 ```{r}
 glimpse(trips_mcma)
 
+#trips within mexico city
+
 
 trips_mcma %>%
   drop_na(state_origin, state_dest) %>%
@@ -132,5 +127,49 @@ trips_mcma %>%
   filter(state_origin==9 & state_dest==9) %>%
   count()
 
- ```
+
+#trips within mexico city and municipalities
+trips_mcma %>%
+  drop_na(state_origin, state_dest,mun_origin,mun_dest) %>%
+  filter(state_origin==9 & state_dest==9 ,  mun_origin==mun_dest) %>%
+  count
+
+#trips within municipalities (not necessarily in mexico city)
+
+trips_mcma %>%
+  drop_na(mode_trans) %>%
+  #filter( ) %>%
+  count
+
+
+```
+
+2.3.2
+```{r}
+
+
+head(trips_mcma,100)
+
+# lengt of tips
+trips_mcma %>%
+mutate(minutes = (arr_hour - dep_hour)*60 + arr_min - dep_min) %>%
+  drop_na(minutes) %>%
+   summarize(mean_minutes = mean(minutes, na.rm = TRUE))
+
+
+#length of biking trips
+trips_mcma %>%
+mutate(minutes = (arr_hour - dep_hour)*60 + arr_min - dep_min) %>%
+  drop_na(minutes) %>%
+  filter(mode_trans=="Bike") %>%
+   summarize(mean_minutes = mean(minutes, na.rm = TRUE))
+
+
+ggplot(subset(trips_mcma, mode_trans=="Bike"), aes(x = minutes),binwidht=1)+
+         geom_histogram()+
+  xlim(-5,200)
+
+```
+5.3.3
+
 
