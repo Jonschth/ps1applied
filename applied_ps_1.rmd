@@ -1,0 +1,112 @@
+---
+<<<<<<< HEAD
+title: "Problem Set template"
+author: "Fernanda Sobrino"
+date: "29/03/2020"
+=======
+title: "Applied Problem Set 1"
+author: "Ryan McGinnis and Vera Jonsdottir"
+date: "4/22/2021"
+>>>>>>> 9c89b7f7411bfae0667e9669b51c141c7e12337f
+output: 
+  pdf_document:
+    number_sections: yes
+  html_document:
+    df_print: paged
+urlcolor: blue
+---
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tibble)
+library(dplyr)
+library(ggplot2)
+```
+
+
+2.1.1. 
+
+```{r}
+library(readr)
+trips_mcma <- read_csv("trips_mcma.csv")
+View(trips_mcma)
+```
+
+2.1.2 
+
+```{r echo=FALSE}
+print(trips_mcma)
+head(trips_mcma)
+str(trips_mcma)
+glimpse(trips_mcma)
+view(trips_mcma)
+summary(trips_mcma)
+```
+
+2.1.2.1
+str and glimpse are quite similar
+head is technically redundant but it is just more condensed.
+2.1.2.2
+
+2.2.1
+```{r}
+#The data has 531594 rows and 20 columns
+nrow(trips_mcma)
+ncol(trips_mcma)
+#id_trip is the unique identifier.
+#each row represents different (unique) bike rides over a set of indicators. 
+```
+2.2.2
+```{r}
+# Applying group_by & summarise
+ trips_mcma %>%                              
+  summarise(count = n_distinct(state_origin))
+```
+
+```{r}
+trips_mcma %>%
+  drop_na(state_origin, state_dest) %>%
+  count()
+
+```
+
+2.2.3
+```{r}
+trips_mcma %>%                              
+  group_by(mode_trans) %>%   
+  summarise(count = n_distinct((trips_mcma$mode_trans))) %>%
+  arrange(desc(count))
+```
+
+2.2.4
+```{r}
+trips_mcma %>%  
+  count(reason, sort=TRUE)
+  
+
+```
+The five least common reasons for trips are church, other, errands, health, and
+leisure
+
+2.2.5
+```{r}
+trips_mcma %>% 
+  group_by(day)%>%
+  summarise(count=n()) %>%
+  mutate(percent = count/sum(count))
+
+```
+
+2.2.6
+```{r}
+trips_mcma %>%
+mutate(minutes = (arr_hour - dep_hour)*60 + arr_min - dep_min) %>%
+  drop_na(minutes) %>%
+   summarize(mean_minutes = mean(minutes, na.rm = TRUE))
+```
+
+```{r}
+mutate(trips_mcma, m = (arr_hour - dep_hour)*60 + arr_min - dep_min)%>%
+ggplot(data = trips_mcma, aes(x = id_trip, y = m))+
+  geom_bar()
+```
+
