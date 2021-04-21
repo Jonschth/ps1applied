@@ -165,6 +165,7 @@ mutate(minutes = (arr_hour - dep_hour)*60 + arr_min - dep_min) %>%
    summarize(mean_minutes = mean(minutes, na.rm = TRUE))
 
 
+#plot of pikers time
 ggplot(subset(trips_mcma, mode_trans=="Bike"), aes(x = minutes),binwidht=1)+
          geom_histogram()+
   xlim(-5,200)
@@ -172,4 +173,39 @@ ggplot(subset(trips_mcma, mode_trans=="Bike"), aes(x = minutes),binwidht=1)+
 ```
 5.3.3
 
+```{r}
+trips_mcma %>%
+  drop_na(mode_trans) %>%
+  group_by(mode_trans) %>%
+  filter(mun_origin==mun_dest) %>%
+  summarise(count=n()) %>%
+  mutate(percent = count/sum(count))
+
+```
+5.3.4
+```{r}
+ggplot(subset(trips_mcma), aes(x = dep_hour),binwidht=1)+
+         geom_histogram()
+
+
+```
+5.3.5
+```{r}
+
+glimpse(trips_mcma)
+
+trips_mcma %>%
+  drop_na(sex) %>%
+  group_by(sex,mode_trans) %>%
+  summarise(count=n()) %>%
+  mutate(percent = count/sum(count))
+
+
+trips_mcma %>%
+  drop_na(age) %>%
+  group_by(age,mode_trans) %>%
+  summarise(count=n()) %>%
+  mutate(percent = count/sum(count))
+
+```
 
