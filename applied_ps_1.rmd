@@ -202,10 +202,11 @@ trips_mcma %>%
 
 
 trips_mcma %>%
-  drop_na(age) %>%
-  group_by(age,mode_trans) %>%
-  summarise(count=n()) %>%
-  mutate(percent = count/sum(count))
+  mutate(ints=cut(age,c(seq(5,80,by=5),Inf),include.lowest=TRUE)) %>%
+  group_by(ints) %>%
+  summarise(count=n())
+
+glimpse(trips_mcma)
 
 ```
 
