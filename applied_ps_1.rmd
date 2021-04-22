@@ -70,10 +70,11 @@ trips_mcma %>%
 
 2.2.3
 ```{r}
-trips_mcma %>%                              
-  group_by(mode_trans) %>%   
-  summarise(count = n_distinct((trips_mcma$mode_trans))) %>%
-  arrange(desc(count))
+
+trips_mcma %>%  
+  count(mode_trans, sort=TRUE)
+  
+
 ```
 
 2.2.4
