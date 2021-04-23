@@ -226,7 +226,7 @@ trips_mcma %>%
   group_by(ints,sex,mode_trans)%>%
   summarise(count=n())%>%
   ggplot(aes(x=ints,y=count))+
-  geom_point(aes(color=factor(sex)))+
+  geom_point(aes(color=factor(sex),shape=mode_trans))+
   theme(axis.text=element_text(angle=45))
 
 ```
