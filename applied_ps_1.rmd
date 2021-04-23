@@ -120,8 +120,6 @@ ggplot(trips_mcma, aes(x = minutes),binwidht=1)+
 glimpse(trips_mcma)
 
 #trips within mexico city
-
-
 trips_mcma %>%
   drop_na(state_origin, state_dest) %>%
   drop_na(mun_origin,mun_dest) %>%
@@ -129,20 +127,18 @@ trips_mcma %>%
   count()
 
 
-#trips within mexico city and municipalities
+#trips within mexico city and same municipalities
 trips_mcma %>%
-  drop_na(state_origin, state_dest,mun_origin,mun_dest) %>%
   filter(state_origin==9 & state_dest==9 ,  mun_origin==mun_dest) %>%
   count
 
-#trips within municipalities (not necessarily in mexico city)
 
+
+#trips within municipalities (not necessarily in mexico city)
 trips_mcma %>%
   drop_na(mode_trans) %>%
-  #filter( ) %>%
+  filter(mun_origin==mun_dest) %>%
   count
-
-
 ```
 
 2.3.2
@@ -204,10 +200,23 @@ trips_mcma %>%
 
 trips_mcma %>%
   mutate(ints=cut(age,c(seq(5,80,by=5),Inf),include.lowest=TRUE)) %>%
-  group_by(ints) %>%
+  filter(mode_trans=="Bike" | mode_trans=="Walk") %>%
+  group_by(ints,sex,mode_trans) %>%
   summarise(count=n())
 
-glimpse(trips_mcma)
 
+```
+```{r}
+trips_mcma %>%
+  mutate(ints=cut(age,c(seq(5,80,by=5),Inf),include.lowest=TRUE)) %>%
+  filter(mode_trans=="Bike" | mode_trans=="Walk") %>%
+  group_by(ints,sex)%>%
+  summarise(count=n())%>%
+  ggplot(aes(x=ints,y=count))+
+  geom_point(aes(color=factor(sex)))+
+  theme(axis.text=element_text(angle=45))
+
+glimpse(trips_mcma)
+  
 ```
 
