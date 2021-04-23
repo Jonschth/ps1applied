@@ -219,4 +219,15 @@ trips_mcma %>%
 glimpse(trips_mcma)
   
 ```
+```{r}
+trips_mcma %>%
+  mutate(ints=cut(age,c(seq(5,80,by=5),Inf),include.lowest=TRUE)) %>%
+  filter(mode_trans=="Bike" | mode_trans=="Walk") %>%
+  group_by(ints,sex,mode_trans)%>%
+  summarise(count=n())%>%
+  ggplot(aes(x=ints,y=count))+
+  geom_point(aes(color=factor(sex)))+
+  theme(axis.text=element_text(angle=45))
+
+```
 
